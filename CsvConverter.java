@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Map<String, List<Map<String, String>>> roomData = new LinkedHashMap<>();
+        Map<String, List<Map<String, String>>> dataMap = new LinkedHashMap<>();
 
         String csvFile = "input.csv";
         String line;
@@ -21,24 +21,24 @@ public class Main {
 
             while ((line = br.readLine()) != null) {
                 String[] cols = line.split(csvSplitBy, headers.length);
-                String roomId = cols[0];
+                String key = cols[0];
                 Map<String, String> data = new LinkedHashMap<>();
                 for (int i = 1; i < headers.length; i++) {
                     data.put(headers[i], cols[i]);
                 }
 
-                if (roomData.containsKey(roomId)) {
-                    roomData.get(roomId).add(data);
+                if (dataMap.containsKey(key)) {
+                    dataMap.get(key).add(data);
                 } else {
                     List<Map<String, String>> dataList = new ArrayList<>();
                     dataList.add(data);
-                    roomData.put(roomId, dataList);
+                    dataMap.put(key, dataList);
                 }
             }
 
             // 出力結果を生成
             StringBuilder output = new StringBuilder();
-            for (Map.Entry<String, List<Map<String, String>>> entry : roomData.entrySet()) {
+            for (Map.Entry<String, List<Map<String, String>>> entry : dataMap.entrySet()) {
                 output.append(prefix).append(entry.getKey()).append(",");
                 List<Map<String, String>> dataList = entry.getValue();
                 output.append("[");
