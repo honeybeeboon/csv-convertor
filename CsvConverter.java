@@ -47,7 +47,7 @@ public class Main {
                     output.append("{");
                     int k = 0;
                     for (Map.Entry<String, String> item : data.entrySet()) {
-                        output.append("\\\"").append(item.getKey()).append("\\\": \\\"").append(item.getValue()).append("\\\"");
+                        output.append("\"").append(item.getKey()).append("\":\"").append(item.getValue()).append("\"");
                         if (k < data.size() - 1) {
                             output.append(",");
                         }
