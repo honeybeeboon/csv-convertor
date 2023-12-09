@@ -1,5 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -11,11 +13,12 @@ public class Main {
         String line;
         String csvSplitBy = ",";
 
-        String prefix = args.length > 0 ? args[0] + ":" + "";
+        String prefix = args.length > 0 ? args[0] + ":" : "";
         
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String headerLine = br.readLine();
-            String[] headers = headerLine.split(csvSplitBy);
+            String[] headers = headerLine.split(csvSplitBy);            
+
             while ((line = br.readLine()) != null) {
                 String[] cols = line.split(csvSplitBy, headers.length);
                 String roomId = cols[0];
@@ -34,27 +37,36 @@ public class Main {
             }
 
             // 出力結果を生成
+            StringBuilder output = new StringBuilder();
             for (Map.Entry<String, List<Map<String, String>>> entry : roomData.entrySet()) {
-                System.out.print(prefix + entry.getKey() + ",");
+                output.append(prefix).append(entry.getKey()).append(",");
                 List<Map<String, String>> dataList = entry.getValue();
-                System.out.print("\"[");
+                output.append("[");
                 for (int j = 0; j < dataList.size(); j++) {
                     Map<String, String> data = dataList.get(j);
-                    System.out.print("{");
+                    output.append("{");
                     int k = 0;
                     for (Map.Entry<String, String> item : data.entrySet()) {
-                        System.out.print("\\\"" + item.getKey() + "\\\":\\\"" + item.getValue() + "\\\"");
+                        output.append("\\\"").append(item.getKey()).append("\\\": \\\"").append(item.getValue()).append("\\\"");
                         if (k < data.size() - 1) {
-                            System.out.print(",");
+                            output.append(",");
                         }
                         k++;
                     }
-                    System.out.print("}");
+                    output.append("}");
                     if (j < dataList.size() - 1) {
-                        System.out.print(",");
+                        output.append(",");
                     }
                 }
-                System.out.println("]\"");
+                output.append("]");
+                output.append("\n");
+            }
+            
+            // 結果をファイルに書き込む
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.json"))) {
+                writer.write(output.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } catch (IOException e) {
