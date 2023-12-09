@@ -63,7 +63,7 @@ public class Main {
             }
             
             // 結果をファイルに書き込む
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.json"))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.csv"))) {
                 writer.write(output.toString());
             } catch (IOException e) {
                 e.printStackTrace();
