@@ -10,6 +10,8 @@ public class Main {
         String csvFile = "input.csv";
         String line;
         String csvSplitBy = ",";
+
+        String prefix = args.length > 0 ? args[0] + ":" + "";
         
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String headerLine = br.readLine();
@@ -33,7 +35,7 @@ public class Main {
 
             // 出力結果を生成
             for (Map.Entry<String, List<Map<String, String>>> entry : roomData.entrySet()) {
-                System.out.print(entry.getKey() + ",");
+                System.out.print(prefix + entry.getKey() + ",");
                 List<Map<String, String>> dataList = entry.getValue();
                 System.out.print("\"[");
                 for (int j = 0; j < dataList.size(); j++) {
